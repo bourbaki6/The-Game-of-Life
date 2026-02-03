@@ -1,0 +1,2 @@
+class LifeRules:
+    def rules()
