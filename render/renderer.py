@@ -3,7 +3,7 @@
 
 import matplotlib.pyplot as plt
 
-from grid import Grid
+from core.grid import Grid
 
 class Renderer:
     

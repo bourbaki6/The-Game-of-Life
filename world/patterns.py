@@ -58,6 +58,7 @@ class Patterns:
         ],  dtype = np.uint8)
         return Grid(data)
 
+class Glider:
     def glider() -> Grid:
         data = np.array([
             [0, 1, 0],

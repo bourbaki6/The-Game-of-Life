@@ -1,7 +1,7 @@
 #---applying rules to grid---#
 
-from rules import life_rule
-from grid import Grid
+from core.rules import Rules
+from core.grid import Grid
 
 import numpy as np
 

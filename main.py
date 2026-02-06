@@ -1,15 +1,16 @@
-import numpy as np
 
 from core.grid import Grid
 from simulation.engine import Simulation
 from render.renderer import Renderer
 from world.boundaries import ToroidalBoundary
-from world.patterns import glider
+from world.patterns import Glider
 
+import numpy as np
 
 def embed(pattern: Grid, shape=(60, 60)) -> Grid:
+
     data = np.zeros(shape, dtype=np.uint8)
-    h, w = pattern.shape
+    h, w = pattern.Glider
     cx, cy = shape[0] // 2, shape[1] // 2
     data[cx: cx+h, cy: cy+w] = pattern.data
     return Grid(data)
@@ -17,9 +18,9 @@ def embed(pattern: Grid, shape=(60, 60)) -> Grid:
 
 if __name__ == "__main__":
 
-    grid = embed(glider())
+    grid = embed(Glider())
     sim = Simulation(grid, ToroidalBoundary())
-    renderer = MPLRenderer(sim.grid)
+    renderer = Renderer(sim.grid)
 
     while True:
         sim.tick()
