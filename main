@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     grid = embed(glider())
     sim = Simulation(grid, ToroidalBoundary())
-    renderer = MPLRenderer(sim.grid)
+    renderer = Renderer(sim.grid)
 
     while True:
         sim.tick()
