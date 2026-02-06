@@ -7,6 +7,7 @@ from typing import Tuple
 class Grid:
     
     def __init__(self, data: np.ndarray):
+        
         if data.ndim != 2:
             raise ValueError("Grid is 2D")
         self.data = data.astype(np.uint8)
