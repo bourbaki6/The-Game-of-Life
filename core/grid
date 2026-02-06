@@ -1,7 +1,35 @@
+#---The grid world of teh game represented through numpy arrays, just teh state prsent here---#
+
+
 import numpy as np
-
-
+from typing import Tuple
 
 class Grid:
+    
     def __init__(self, data: np.ndarray):
-        if data
+        if data.ndim != 2:
+            raise ValueError("Grid is 2D")
+        self.data = data.astype(np.uint8)
+
+    @property
+    def shape(self) -> Tuple[int, int]:
+        return self.data.shape
+    
+    def alive_count(self) -> int:
+        return int(self.data.sum())
+    
+    def copy(self) -> "Grid":
+        return Grid(self.data.copy())   
+    
+    @classmethod
+    def empty(cls, shape: Tuple[int, int]) -> "Grid":
+        return cls(np.zeros(shape, dtype=np.uint8))
+
+    @classmethod
+    def random(cls, shape: Tuple[int, int], p: float = 0.2) -> "Grid":
+        if not 0 <= p <= 1:
+            raise ValueError("p must be between 0 and 1")
+        data = (np.random.rand(*shape) < p).astype(np.uint8)
+        return cls(data)
+
+    
