@@ -14,6 +14,7 @@ class Simulation:
 
 
     def tick(self):
+        
         counts = self.boundary.count_neighbors(self.grid.data)
         self.grid = step(self.grid, counts)
         self.t += 1
