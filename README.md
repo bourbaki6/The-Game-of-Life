@@ -1,9 +1,5 @@
 # Conway's Game of Life
 
-<<<<<<< HEAD
-
-=======
->>>>>>> c9a9c92ba29c796ec037f54f0e3a08f2d2b6ae01
 A modular, real-time implementation of Conway’s Game of Life.
 
 ## Overview
@@ -29,7 +25,3 @@ The frontend renders the simulation using HTML5 Canvas.
 - Multi-user sessions
 - Performance profiling metrics
 
-<<<<<<< HEAD
-=======
-
->>>>>>> c9a9c92ba29c796ec037f54f0e3a08f2d2b6ae01
