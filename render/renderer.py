@@ -16,4 +16,6 @@ class Renderer:
 
     def draw(self, grid:Grid):
         self.im.set_data(grid.data)
-        plt.pause(0.1)
+        self.fig.canvas.draw()
+        self.fig.canvas.flush_events()
+        plt.pause(0.05)
