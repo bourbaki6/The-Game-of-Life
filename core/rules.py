@@ -1,6 +1,7 @@
 #---canonical rules---#
 
 class Rules:
+    
     @staticmethod
     def life_rule(cell: int, neighbour: int) -> int:
         

@@ -12,10 +12,11 @@ def step(grid:Grid, neighbour_counts: np.ndarray) -> Grid:
     h, w = data.shape
     new = np.zeros_like(data)
 
-    for i in range(h):
-        for j in range(w):
-            new[i, j] = life_rule(data[i, j], neighbour_counts[i, j])
-
+    new = np.where(
+        (data == 1) & np.isin(neighbour_counts, [2, 3]), 1,
+        np.where((data == 0) & (neighbour_counts == 3), 1, 0)
+    ).astype(np.unit8)
+    
     return Grid(new)
 
 

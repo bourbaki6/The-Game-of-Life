@@ -8,16 +8,17 @@
 import numpy as np
 
 class DeadCellsBoundary:
-
     def count_neighbors(self, data: np.ndarray) -> np.ndarray:
-        
+        padded = np.pad(data, 1, mode='constant', constant_values=0)
         n = np.zeros_like(data)
         
         for dx in (-1, 0, 1):
             for dy in (-1, 0, 1):
                 if dx == 0 and dy == 0:
                     continue
-                n += np.roll(np.roll(data, dx, axis=0), dy, axis=1)
+                
+                n += padded[1 + dx:1 + dx + data.shape[0],
+                            1 + dy:1 + dy +data.shape[1]]
         return n
 
 class ToroidalBoundary:
