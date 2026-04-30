@@ -9,7 +9,7 @@ import numpy as np
 
 def embed(pattern: Grid, shape=(60, 60)) -> Grid:
 
-    data = np.zeros(shape, dtype=np.uint8)
+    data = np.zeros(shape, dtype = np.uint8)
     h, w = pattern.shape
     cx, cy = shape[0] // 2, shape[1] // 2
     data[cx: cx+h, cy: cy+w] = pattern.data
