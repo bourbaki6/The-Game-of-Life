@@ -1,7 +1,7 @@
 #---canonical rules---#
 
 class Rules:
-
+    @staticmethod
     def life_rule(cell: int, neighbour: int) -> int:
         
         if cell == 1 and neighbour in (2, 3):
@@ -11,3 +11,5 @@ class Rules:
             return 1
         
         return 0
+
+
