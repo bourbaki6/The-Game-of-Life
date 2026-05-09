@@ -58,7 +58,6 @@
     padding: 28px 32px;
   }
 
-  
   #header { display: flex; align-items: center; gap: 14px; }
 
   #title {
@@ -309,7 +308,6 @@ function gridSize() {
   };
 }
 
-// ── Render ────────────────────────────────────────────────────────────────────
 function render() {
   if (!cells) return;
   const w = canvas.width;
@@ -426,9 +424,7 @@ async function flushPaint() {
   } catch(e) { setConn(false); }
 }
 
-
 setInterval(async () => { if (running) await apiTick(); }, TARGET_INTERVAL);
-
 
 function cellAt(e) {
   const r = canvas.getBoundingClientRect();
@@ -462,7 +458,6 @@ window.addEventListener('mouseup', () => {
   if (painting) { painting = false; flushPaint(); }
 });
 
-
 const btnPlay = document.getElementById('btn-play');
 
 btnPlay.addEventListener('click', () => {
@@ -470,7 +465,6 @@ btnPlay.addEventListener('click', () => {
   btnPlay.textContent = running ? 'Pause' : 'Play';
   btnPlay.classList.toggle('active', running);
 });
-
 document.getElementById('btn-step').addEventListener('click', async () => {
   running = false;
   btnPlay.textContent = 'Play';
@@ -479,13 +473,10 @@ document.getElementById('btn-step').addEventListener('click', async () => {
 });
 
 document.getElementById('btn-clear').addEventListener('click', () => apiInit('random'));
-
 document.querySelectorAll('[data-pattern]').forEach(btn =>
   btn.addEventListener('click', () => apiInit(btn.dataset.pattern))
 );
-
 document.getElementById('boundary-select').addEventListener('change', () => apiInit('random'));
-
 window.addEventListener('keydown', e => {
   if (e.code === 'Space')      { e.preventDefault(); btnPlay.click(); }
   if (e.code === 'ArrowRight') {

@@ -13,24 +13,20 @@ class Grid:
         self.data = data.astype(np.uint8)
 
     @property
-    def shape(self) -> Tuple[int, int]:
-        return self.data.shape
-    
+    def shape(self): return self.data.shape
+
     def alive_count(self) -> int:
         return int(self.data.sum())
-    
-    def copy(self) -> "Grid":
-        return Grid(self.data.copy())   
-    
-    @classmethod
-    def empty(cls, shape: Tuple[int, int]) -> "Grid":
-        return cls(np.zeros(shape, dtype=np.uint8))
+
+    def set_cell(self, row: int, col: int, value: int):
+        self.data[row, col] = value
 
     @classmethod
-    def random(cls, shape: Tuple[int, int], p: float = 0.2) -> "Grid":
-        if not 0 <= p <= 1:
-            raise ValueError("p must be between 0 and 1")
-        data = (np.random.rand(*shape) < p).astype(np.uint8)
-        return cls(data)
-
+    def from_pattern(cls, pattern: np.ndarray, canvas: tuple, center=True) -> 'Grid':
+        grid = cls.empty(canvas)
+        h, w = pattern.shape
+        r, c = (canvas[0]//2 - h//2, canvas[1]//2 - w//2) if center else (0, 0)
+        grid.data[r:r+h, c:c+w] = pattern
+        
+        return grid
     

@@ -2,16 +2,17 @@
 
 from core.grid import Grid
 import numpy as np
+from world.boundaries import Boundary
 
-def step(grid: Grid, neighbour_counts: np.ndarray) -> Grid:
-
-    data = grid.data
-
+def step(grid: Grid, boundary: Boundary) -> Grid:
+    
+    counts = boundary.count_neighbors(grid.data)
+    
     new = np.where(
-        (data == 1) & np.isin(neighbour_counts, [2, 3]), 1,
-        np.where((data == 0) & (neighbour_counts == 3), 1, 0)
+        (grid.data == 1) & np.isin(counts, [2, 3]), 1,
+        np.where((grid.data == 0) & (counts == 3), 1, 0)
     ).astype(np.uint8)
-
+    
     return Grid(new)
 
 

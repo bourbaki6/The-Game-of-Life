@@ -1,5 +1,6 @@
 #---time evoltion observation---#
 
+import numpy as np
 from core.stepper import step
 from core.grid import Grid
 from world.boundaries import Boundary
@@ -18,4 +19,12 @@ class Simulation:
         counts = self.boundary.count_neighbors(self.grid.data)
         self.grid = step(self.grid, counts)
         self.t += 1
+        
         return self.grid
+    
+    def is_stable(self) -> bool:
+        return np.array_equal(self.grid.data, self._prev)
+
+    def is_extinct(self) -> bool:
+        
+        return self.grid.alive_count() == 0
