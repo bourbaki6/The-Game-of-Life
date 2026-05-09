@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from core.grid import Grid
 from simulation.engine import Simulation
 from world.boundaries import ToroidalBoundary, DeadCellsBoundary, MobiusStrip
-from world.patterns import Patterns, Spaceships
+from world.patterns import Ant, Decapole,  Spaceships
 
 app = FastAPI(title = "Conway's Game of Life")
 
@@ -33,7 +33,10 @@ generation: int = 0
 class InitRequest(BaseModel):
     cols: int = 120
     rows: int = 80
-    pattern: Literal["random", "glider", "pulsar", "gosper", "rpentomino"] = "random"
+    pattern: Literal["random", "bipond", "ship", "tablecloth", 
+                     "blinker", "diagonal", "square", "ship",
+                     "glider", "pulsar", "obospark", "arrow",
+                     "ant", "decapole","gosper", "rpentomino"] = "random"
     boundary: Literal["toroidal", "dead", "mobius"] = "toroidal"
 
 
@@ -72,18 +75,10 @@ def _boundary(name: str):
             "mobius": MobiusStrip}[name]()
 
 def _embed(pattern: Grid, rows: int, cols: int) -> Grid:
-   
-    data = np.zeros((rows, cols), dtype = np.uint8)
-    ph, pw = pattern.shape
-    r0 = max(0, (rows - ph) // 2)
-    c0 = max(0, (cols - pw) // 2)
-    data[r0:r0+ph, c0:c0+pw] = pattern.data
-    
-    return Grid(data)
+    return Grid.from_pattern(pattern, (rows, cols))
 
 def _grid_state() -> GridState:
     g = sim.grid
-    
     rows, cols = g.shape
     
     return GridState(
