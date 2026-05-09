@@ -2,10 +2,12 @@
 <html lang = "en">
 <head>
 <meta charset = "UTF-8">
-<meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Conway's Game of Life</title>
-<link href = "https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
 <style>
+  @import url('https://fonts.cdnfonts.com/css/offbit-trial');
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&display=swap');
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
@@ -16,13 +18,15 @@
     --text: #a09880;
     --text-dim: #4a4840;
     --border: rgba(200,169,110,0.12);
+    --font-bit: 'OffBit Trial', 'DM Mono', monospace;
+    --font-mono: 'DM Mono', monospace;
   }
 
   html, body {
     width: 100%; height: 100%;
     background: var(--bg);
     color: var(--text);
-    font-family: 'DM Mono', monospace;
+    font-family: var(--font-mono);
     overflow: hidden;
     user-select: none;
   }
@@ -34,20 +38,17 @@
 
   canvas { display: block; cursor: crosshair; image-rendering: pixelated; }
 
-
   #canvas-wrap::after {
     content: ''; position: absolute; inset: 0;
     background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, rgba(8,8,14,0.85) 100%);
     pointer-events: none;
   }
 
-
   #scanlines {
     position: fixed; inset: 0;
-    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
     pointer-events: none; z-index: 10;
   }
-
 
   #ui {
     position: fixed; inset: 0;
@@ -57,37 +58,64 @@
     padding: 28px 32px;
   }
 
-  #header { display: flex; align-items: baseline; gap: 16px; }
+  
+  #header { display: flex; align-items: center; gap: 14px; }
 
   #title {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300; font-size: 22px;
-    color: var(--cell-alive); letter-spacing: 0.12em; opacity: 0.9;
+    font-family: var(--font-bit);
+    font-size: 28px;
+    color: var(--cell-alive);
+    letter-spacing: 0.06em;
+    line-height: 1;
+    -webkit-text-stroke: 0.6px var(--cell-alive);
+    text-shadow:
+      0.5px  0    0 var(--cell-alive),
+      -0.5px 0    0 var(--cell-alive),
+      0      0.5px 0 var(--cell-alive),
+      0     -0.5px 0 var(--cell-alive),
+      0 0 24px rgba(232,228,212,0.22);
   }
 
-  #subtitle { font-size: 10px; letter-spacing: 0.22em; color: var(--text-dim); text-transform: uppercase; }
+  #subtitle {
+    font-family: var(--font-bit);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--text-dim);
+    padding-top: 4px;
+  }
 
   #conn-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--text-dim); align-self: center;
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--text-dim); flex-shrink: 0;
     transition: background 0.4s;
-    flex-shrink: 0;
+    box-shadow: none;
   }
-  #conn-dot.ok  { background: #6a9a6e; }
-  #conn-dot.err { background: #9a4a4a; }
+  #conn-dot.ok  { background: #6a9a6e; box-shadow: 0 0 6px #6a9a6e88; }
+  #conn-dot.err { background: #9a4a4a; box-shadow: 0 0 6px #9a4a4a88; }
 
-  #stats { display: flex; gap: 28px; align-items: baseline; }
+  #stats { display: flex; gap: 28px; align-items: flex-start; margin-left: auto; }
 
-  .stat { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .stat { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
 
   .stat-val {
-    font-size: 18px; font-weight: 300;
+    font-family: var(--font-bit);
+    font-size: 22px;
     color: var(--cell-alive);
     font-variant-numeric: tabular-nums;
-    letter-spacing: 0.05em; min-width: 60px; text-align: right;
+    letter-spacing: 0.04em;
+    min-width: 64px;
+    text-align: right;
+    line-height: 1;
   }
 
-  .stat-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); }
+  .stat-label {
+    font-family: var(--font-bit);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
 
   #footer { display: flex; align-items: center; justify-content: space-between; }
 
@@ -97,79 +125,116 @@
     background: transparent;
     border: 1px solid var(--border);
     color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
-    padding: 7px 14px; cursor: pointer; transition: all 0.2s;
+    font-family: var(--font-bit);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.18s;
+    line-height: 1;
   }
 
   button:hover  { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
   button.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
-  button:disabled { opacity: 0.3; cursor: not-allowed; }
-
-  #pattern-bar { display: flex; gap: 5px; pointer-events: all; }
-
-  #pop-section { position: fixed; bottom: 80px; left: 32px; z-index: 21; }
-  #pop-label { font-size: 9px; letter-spacing: 0.18em; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; }
-  #gen-graph { display: flex; align-items: flex-end; gap: 1px; height: 20px; }
-  .gen-bar { width: 2px; background: var(--accent); opacity: 0.4; transition: height 0.1s; }
 
   #boundary-wrap {
-    display: flex; 
-    gap: 8px; 
-    pointer-events: all; 
-    align-items: center;
-    margin-left: 12px;
+    display: flex; gap: 8px; pointer-events: all; align-items: center;
+    margin-left: 14px;
   }
-  #boundary-label { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); }
+  #boundary-label {
+    font-family: var(--font-bit);
+    font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim);
+  }
 
   select {
     background: transparent;
     border: 1px solid var(--border);
     color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 10px; letter-spacing: 0.12em;
-    padding: 6px 10px; cursor: pointer; outline: none;
+    font-family: var(--font-bit);
+    font-size: 10px; letter-spacing: 0.1em;
+    padding: 7px 10px; cursor: pointer; outline: none;
+    transition: border-color 0.18s;
   }
+  select:hover { border-color: var(--accent); }
   select option { background: #12121a; color: var(--text); }
+
+  #pattern-bar { display: flex; gap: 5px; pointer-events: all; }
+
+  
+  #pop-section { position: fixed; bottom: 80px; left: 32px; z-index: 21; }
+
+  #pop-label {
+    font-family: var(--font-bit);
+    font-size: 9px; letter-spacing: 0.2em; color: var(--text-dim);
+    text-transform: uppercase; margin-bottom: 5px;
+  }
+
+  #gen-graph { display: flex; align-items: flex-end; gap: 1px; height: 22px; }
+
+  .gen-bar { width: 2px; background: var(--accent); opacity: 0.35; transition: height 0.08s; }
 
 
   #offline {
     position: fixed; inset: 0; z-index: 100;
-    background: rgba(8,8,14,0.92);
+    background: rgba(8,8,14,0.94);
     display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 12px;
+    align-items: center; justify-content: center; gap: 14px;
     transition: opacity 0.4s;
   }
   #offline.hidden { opacity: 0; pointer-events: none; }
-  #offline p { font-size: 11px; letter-spacing: 0.18em; color: var(--text-dim); text-transform: uppercase; }
-  #offline code { font-size: 13px; color: var(--accent); letter-spacing: 0.08em; }
+
+  #offline-title {
+    font-family: var(--font-bit);
+    font-size: 22px;
+    color: var(--cell-alive);
+    letter-spacing: 0.1em;
+  }
+
+  #offline p {
+    font-family: var(--font-bit);
+    font-size: 10px; letter-spacing: 0.16em; color: var(--text-dim); text-transform: uppercase;
+  }
+  #offline code {
+    font-family: var(--font-mono);
+    font-size: 13px; color: var(--accent); letter-spacing: 0.08em;
+    border: 1px solid var(--border); padding: 8px 16px;
+  }
 
   @keyframes fadein { from{opacity:0} to{opacity:1} }
-  body { animation: fadein 1.2s ease both; }
+  body { animation: fadein 1s ease both; }
 </style>
 </head>
 <body>
 
-<div id ="canvas-wrap"><canvas id = "c"> </canvas></div>
+<div id = "canvas-wrap"><canvas id = "c"></canvas></div>
 <div id = "scanlines"></div>
 
-
 <div id = "offline">
+  <div id = "offline-title">GAME OF LIFE</div>
   <p>Start the Python server first</p>
   <code>uvicorn server:app --reload</code>
-  <p style = "margin-top:8px">then refresh this page</p>
+  <p style = "margin-top:4px">then refresh this page</p>
 </div>
 
-<div id = "ui">
-  <div id = "header">
-    <span id = "title">Game of Life</span>
-    <span id = "subtitle">Conway · 1970</span>
+<div id= "ui">
+  <div id="header">
+    <span id = "title">GAME OF LIFE</span>
+    <span id = "subtitle">CONWAY · 1970</span>
     <div id = "conn-dot" title="Server connection"></div>
-    <div style = "flex:1"></div>
     <div id = "stats">
-      <div class = "stat"><span class="stat-val" id="s-gen">0</span><span class="stat-label">Generation</span></div>
-      <div class="stat"><span class="stat-val" id="s-alive">0</span><span class="stat-label">Alive</span></div>
-      <div class="stat"><span class="stat-val" id="s-avg">—</span><span class="stat-label">Avg gen/s</span></div>
+      <div class = "stat">
+        <span class = "stat-val" id = "s-gen">0</span>
+        <span class = "stat-label">Generation</span>
+      </div>
+      <div class="stat">
+        <span class="stat-val" id="s-alive">0</span>
+        <span class="stat-label">Alive</span>
+      </div>
+      <div class = "stat">
+        <span class= "stat-val" id = "s-avg">—</span>
+        <span class = "stat-label">Avg gen/s</span>
+      </div>
     </div>
   </div>
 
@@ -182,19 +247,19 @@
     </div>
     <div id = "footer">
       <div id = "controls">
-        <button id = "btn-play" class = "active">Pause</button>
+        <button id = "btn-play" class="active">Pause</button>
         <button id = "btn-step">Step</button>
         <button id = "btn-clear">Clear</button>
         <div id = "boundary-wrap">
           <span id = "boundary-label">Boundary</span>
           <select id = "boundary-select">
             <option value = "toroidal" selected>Toroidal</option>
-            <option value = "dead">Dead cells</option>
+            <option value  = "dead">Dead cells</option>
             <option value = "mobius">Möbius</option>
           </select>
         </div>
       </div>
-      <div id = "pattern-bar">
+      <div id="pattern-bar">
         <button data-pattern = "random">Random</button>
         <button data-pattern = "glider">Glider</button>
         <button data-pattern = "pulsar">Pulsar</button>
@@ -206,31 +271,26 @@
 </div>
 
 <script>
-
-const API  = 'http://localhost:8000';
+const API = 'http://localhost:8000';
 const CELL = 10;
-const TARGET_INTERVAL = 55;   
+const TARGET_INTERVAL = 55;
 const POP_HISTORY = 48;
-const AVG_WINDOW  = 30;
-
+const AVG_WINDOW = 30;
 
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
 
 let cols = 0, rows = 0;
-let cells = null;            
-let running = true;
+let cells = null;
+let running  = true;
 let painting = false;
 let paintValue = 1;
-let pendingCells = [];       
-let popHistory = [];
-let stepTimes = [];
-let tickTimer = null;
+let pendingCells = [];
+let popHistory = [], stepTimes = [];
 let imageData, data32;
 
-const BG_COLOR   = 0xFF0E0808;   
-const CELL_COLOR = 0xFFD4E4E8;   
-
+const BG_COLOR  = 0xFF0E0808;
+const CELL_COLOR = 0xFFD4E4E8;
 
 function setupCanvas(c, r) {
   cols = c; rows = r;
@@ -239,7 +299,7 @@ function setupCanvas(c, r) {
   canvas.style.width  = canvas.width  + 'px';
   canvas.style.height = canvas.height + 'px';
   imageData = ctx.createImageData(canvas.width, canvas.height);
-  data32    = new Uint32Array(imageData.data.buffer);
+  data32  = new Uint32Array(imageData.data.buffer);
 }
 
 function gridSize() {
@@ -249,7 +309,7 @@ function gridSize() {
   };
 }
 
-
+// ── Render ────────────────────────────────────────────────────────────────────
 function render() {
   if (!cells) return;
   const w = canvas.width;
@@ -259,25 +319,25 @@ function render() {
       const px = x * CELL, py = y * CELL;
       for (let dy = 0; dy < CELL - 1; dy++) {
         for (let dx = 0; dx < CELL - 1; dx++)
-          data32[(py+dy)*w + (px+dx)] = color;
-        data32[(py+dy)*w + (px+CELL-1)] = BG_COLOR;
+          data32[(py + dy) * w + (px + dx)] = color;
+        data32[(py + dy) * w + (px + CELL - 1)] = BG_COLOR;
       }
       for (let dx = 0; dx < CELL; dx++)
-        data32[(py+CELL-1)*w + (px+dx)] = BG_COLOR;
+        data32[(py + CELL - 1) * w + (px + dx)] = BG_COLOR;
     }
   }
   ctx.putImageData(imageData, 0, 0);
 }
 
 function updateStats(state) {
-  document.getElementById('s-gen').textContent   = state.generation.toLocaleString();
+  document.getElementById('s-gen').textContent = state.generation.toLocaleString();
   document.getElementById('s-alive').textContent = state.alive.toLocaleString();
 
   const now = performance.now();
   stepTimes.push(now);
   if (stepTimes.length > AVG_WINDOW) stepTimes.shift();
   const avg = stepTimes.length > 1
-    ? (stepTimes.length - 1) / ((stepTimes[stepTimes.length-1] - stepTimes[0]) / 1000)
+    ? (stepTimes.length - 1) / ((stepTimes[stepTimes.length - 1] - stepTimes[0]) / 1000)
     : null;
   document.getElementById('s-avg').textContent = avg ? avg.toFixed(1) : '—';
 
@@ -288,19 +348,20 @@ function updateStats(state) {
   if (graph.children.length !== POP_HISTORY) {
     graph.innerHTML = '';
     for (let i = 0; i < POP_HISTORY; i++) {
-      const b = document.createElement('div'); b.className = 'gen-bar'; graph.appendChild(b);
+      const b = document.createElement('div');
+      b.className = 'gen-bar';
+      graph.appendChild(b);
     }
   }
   const max = Math.max(...popHistory, 1);
   [...graph.children].forEach((b, i) => {
-    b.style.height = Math.max(1, (popHistory[i] ?? 0) / max * 20) + 'px';
+    b.style.height = Math.max(1, (popHistory[i] ?? 0) / max * 22) + 'px';
   });
 }
 
 function setConn(ok) {
   const dot = document.getElementById('conn-dot');
   dot.className = ok ? 'ok' : 'err';
-  dot.title     = ok ? 'Connected to Python server' : 'Server unreachable';
   document.getElementById('offline').classList.toggle('hidden', ok);
 }
 
@@ -308,8 +369,8 @@ async function apiInit(pattern = 'random') {
   const { cols: c, rows: r } = gridSize();
   const boundary = document.getElementById('boundary-select').value;
   try {
-    const res = await fetch(`${API}/init`, {
-      method:  'POST',
+    const res   = await fetch(`${API}/init`, {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ cols: c, rows: r, pattern, boundary }),
     });
@@ -322,23 +383,21 @@ async function apiInit(pattern = 'random') {
     setConn(true);
   } catch(e) {
     setConn(false);
-    console.error('Init failed:', e);
   }
 }
 
 async function apiTick() {
   try {
-    
     if (pendingCells.length > 0) {
       await fetch(`${API}/set_cells`, {
-        method:  'POST',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cells: pendingCells }),
       });
       pendingCells = [];
     }
     const res   = await fetch(`${API}/tick`, {
-      method:  'POST',
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ steps: 1 }),
     });
@@ -353,10 +412,10 @@ async function apiTick() {
 }
 
 async function flushPaint() {
-  if (pendingCells.length === 0) return;
+  if (!pendingCells.length) return;
   try {
     const res   = await fetch(`${API}/set_cells`, {
-      method:  'POST',
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ cells: pendingCells }),
     });
@@ -368,12 +427,7 @@ async function flushPaint() {
 }
 
 
-function startLoop() {
-  if (tickTimer) return;
-  tickTimer = setInterval(async () => {
-    if (running) await apiTick();
-  }, TARGET_INTERVAL);
-}
+setInterval(async () => { if (running) await apiTick(); }, TARGET_INTERVAL);
 
 
 function cellAt(e) {
@@ -445,7 +499,7 @@ window.addEventListener('keydown', e => {
 
 window.addEventListener('resize', () => apiInit('random'));
 
-apiInit('random').then(startLoop);
+apiInit('random');
 </script>
 </body>
 </html>

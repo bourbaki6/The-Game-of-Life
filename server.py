@@ -16,7 +16,7 @@ from simulation.engine import Simulation
 from world.boundaries import ToroidalBoundary, DeadCellsBoundary, MobiusStrip
 from world.patterns import Patterns, Spaceships
 
-app = FastAPI(title="Conway's Game of Life")
+app = FastAPI(title = "Conway's Game of Life")
 
 app.add_middleware(
     CORSMiddleware,
