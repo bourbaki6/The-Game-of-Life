@@ -1,12 +1,12 @@
 # Conway's Game of Life
 
-A modular, real-time implementation of Conway’s Game of Life.
+A modular, implementation of Conway’s Game of Life.
 
 ## Overview
 
 This project implements Conway’s Game of Life as a modular simulation engine.
 
-## Boundary Conditions
+## Boundary Conditions Implemented
 
 - Finite Grid
 - Toroidal Topology
@@ -18,6 +18,5 @@ This project implements Conway’s Game of Life as a modular simulation engine.
 - Distributed simulation nodes
 - Rule editor interface
 - RLE pattern import
-- Multi-user sessions
-- Performance profiling metrics
+
 
