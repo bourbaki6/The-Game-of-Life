@@ -28,6 +28,16 @@ class Basic:
         ], dtype = np.uint8)
         
         return Grid(data)
+    
+    @staticmethod
+    def tablecloth() -> Grid:
+        data = np.array([
+            [1, 1, 1, 1],
+            [1, 0, 0, 1],
+            [1, 0, 0, 1],
+            [1, 1, 1, 1]
+        ], dtype = np.uint8)
+        return Grid(data)
 
     @staticmethod
     def ship() -> Grid:
@@ -36,9 +46,15 @@ class Basic:
             [1, 0, 1],
             [0, 1, 1]
         ], dtype = np.uint8)
-        
         return Grid(data)
-
+    
+    @staticmethod
+    def domino() -> Grid:
+        data = np.array([
+            [1, 1]
+        ], dtype = np.uint8)
+        return Grid(data)
+    
     @staticmethod
     def beehive() -> Grid:
         data = np.array([
@@ -46,6 +62,13 @@ class Basic:
             [1, 0, 0, 1],
             [0, 1, 1, 0]
         ], dtype = np.uint8)
+        return Grid(data)
+    
+    @staticmethod
+    def obospark() -> Grid:
+        data = np.array([
+            [1, 0, 1]
+        ], data = np.uint8)
         return Grid(data)
     
     @staticmethod
@@ -119,6 +142,17 @@ class Basic:
             data[r][c] = 1
         return Grid(data)
 
+class Pentomino:
+
+    @staticmethod
+    def tpentomino() -> Grid:
+        data = np.array([
+            [1, 1, 1],
+            [0, 1, 0],
+            [0, 1, 0]
+        ], dtype = np.uint8)
+        return Grid(data)
+     
     @staticmethod
     def rpentomino() -> Grid:
         data = np.array([
