@@ -1,6 +1,5 @@
 #---time evoltion observation---#
 
-
 from core.stepper import step
 from core.grid import Grid
 from world.boundaries import Boundary
