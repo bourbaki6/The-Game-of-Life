@@ -10,6 +10,7 @@ class Renderer:
     def __init__(self, grid: Grid):
         self.fig, self.ax = plt.subplots()
         self.im = self.ax.imshow(grid.data, cmap = 'binary')
+        
         self.ax.set_xticks([])
         self.ax.set_yticks([])
         pass

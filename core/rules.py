@@ -3,13 +3,15 @@
 class Rules:
 
     @staticmethod
-    def life_rule(cell: int, neighbour: int) -> int:
+    def conway(cell: int, n: int) -> int:
+        return int((cell and n in (2,3)) or (not cell and n == 3))
 
-        if cell == 1 and neighbour in (2, 3):
-            return 1
+    @staticmethod
+    def highlife(cell: int, n: int) -> int:
+        return int((cell and n in (2,3)) or (not cell and n in (3,6)))
 
-        if cell == 0 and neighbour == 3:
-            return 1
+    @staticmethod
+    def day_and_night(cell: int, n: int) -> int:
+        return int((cell and n in (3,4,6,7,8)) or (not cell and n in (3,6,7,8)))
 
-        return 0
-
+    

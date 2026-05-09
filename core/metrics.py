@@ -3,7 +3,6 @@ import numpy as np
 from core.grid import Grid
 from dataclasses import dataclass
 
-
 @dataclass
 class GridMetrics:
     
