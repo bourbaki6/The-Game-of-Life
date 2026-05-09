@@ -12,14 +12,6 @@ class Patterns:
         return Grid(data)
 
     @staticmethod
-    def block() -> Grid:
-        data = np.array([
-            [1, 1],
-            [1, 1]
-        ], dtype = np.uint8)
-        return Grid(data)
-
-    @staticmethod
     def blinker() -> Grid:
         data = np.array([
             [1],
