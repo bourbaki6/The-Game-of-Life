@@ -1,13 +1,21 @@
 import numpy as np
 from core.grid import Grid
 
-class Patterns:
+class Basic:
 
     @staticmethod
     def square() -> Grid:
         data = np.array([
             [1, 1],
             [1, 1]
+        ], dtype = np.uint8)
+        return Grid(data)
+    
+    @staticmethod
+    def diagonal() -> Grid:
+        data = np.array([
+            [0, 1],
+            [1, 0]
         ], dtype = np.uint8)
         return Grid(data)
 
@@ -38,7 +46,19 @@ class Patterns:
             [1, 0, 0, 1],
             [0, 1, 1, 0]
         ], dtype = np.uint8)
-        
+        return Grid(data)
+    
+    @staticmethod
+    def bipond() -> Grid:
+        data = np.array([
+            [0, 1, 1, 0, 0, 0, 0],
+            [1, 0, 0, 1, 0, 0, 0],
+            [1, 0, 0, 1, 0, 0, 0],
+            [0, 1, 1, 0, 1, 1, 0],
+            [0, 0, 0, 1, 0, 0, 1],
+            [0, 0, 0, 1, 0, 0, 1],
+            [0, 0, 0, 0, 1, 1, 0],
+        ], dtype = np.uint8)
         return Grid(data)
 
     @staticmethod
@@ -74,6 +94,15 @@ class Patterns:
             for c in cols_side:
                 data[r][c] = 1
         return Grid(data)
+    
+    @staticmethod
+    def arrow() -> Grid:
+        data = np.array([
+            [1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 1],
+            [0, 1, 1, 1, 0]
+        ], dtype = np.uint8)
+        return Grid(data)
 
     @staticmethod
     def gosper_glider_gun() -> Grid:
@@ -98,10 +127,40 @@ class Patterns:
             [0, 1, 0]
         ], dtype = np.uint8)
         return Grid(data)
+    
+    @staticmethod
+    def qpentomino() -> Grid:
+        data = np.array([
+            [1, 1, 1, 1, 1],
+            [0, 0, 0, 0, 1]
+        ], dtype = np.uint8)
+        return Grid(data)
+    
+    @staticmethod
+    def zpentomino() -> Grid:
+        data = np.array([
+            [1, 1, 0],
+            [0, 1, 0],
+            [0, 1, 0],
+            [0, 1, 1]
+        ], dtype = np.uint8)
+        return Grid(data)
 
-
+ 
 class Spaceships:
 
+    @staticmethod
+    def quad() -> Grid:
+        data = np.array([
+            [1, 1, 0, 0, 1, 1],
+            [1, 0, 0, 1, 0, 1],
+            [0, 1, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1, 0],
+            [1, 0, 1, 0, 0, 1],
+            [1, 1, 0, 0, 1, 1]
+        ], dtype = np.uint8)
+        return Grid(data)
+    
     @staticmethod
     def glider() -> Grid:
         data = np.array([
@@ -110,6 +169,8 @@ class Spaceships:
             [1, 1, 1]
         ], dtype = np.uint8)
         return Grid(data)
+
+class Oscillator:
 
     @staticmethod
     def toad() -> Grid:
@@ -130,4 +191,58 @@ class Spaceships:
         ], dtype = np.uint8)
         return Grid(data)
 
-Glider = Spaceships
+class Acorn:
+    
+    @staticmethod
+    def acorn() -> Grid:
+        data = np.array([
+            [0, 1, 0, 0, 0, 0, 0],
+            [0, 0,0, 1, 0, 0, 0],
+            [1, 1, 0, 0, 1, 1, 1]
+        ], dtype = np.uint8)
+
+        return Grid(data)
+    
+class Diehard:
+
+    @staticmethod
+    def diehard() -> Grid:
+        data = np.array([
+            [0,0,0,0,0,0,1,0],
+            [1,1,0,0,0,0,0,0],
+            [0,1,0,0,0,1,1,1]
+        ], dtype = np.uint8)
+        return Grid(data)
+
+class Ant:
+
+    @staticmethod
+    def ant() -> Grid:
+        data = np.array([
+            [1, 1, 0, 0],
+            [0, 0, 1, 1],
+            [0, 0, 1, 1],
+            [1, 1, 0, 0]
+        ], dtype = np.uint8)
+        return Grid(data)
+    
+class Decapole:
+
+    @staticmethod
+    def decapole() -> Grid:
+        data = np.array([
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1],
+            [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ], dtype = np.uint8)
+        return Grid(data)

@@ -10,6 +10,7 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import List, Literal, Optional
 import numpy as np
+from dataclasses import dataclass
 
 from core.grid import Grid
 from simulation.engine import Simulation
@@ -35,6 +36,20 @@ class InitRequest(BaseModel):
     pattern: Literal["random", "glider", "pulsar", "gosper", "rpentomino"] = "random"
     boundary: Literal["toroidal", "dead", "mobius"] = "toroidal"
 
+
+@dataclass
+class AppState:
+    sim: Simulation | None = None
+    generation: int = 0
+
+state = AppState()
+
+@dataclass
+class AppState:
+    sim: Simulation | None = None
+    generation: int = 0
+
+state = AppState()
 class TickRequest(BaseModel):
     steps: int = 1
 
@@ -46,6 +61,8 @@ class GridState(BaseModel):
     rows: int
     generation: int
     alive: int
+    density: float
+    status: str
     cells: List[int]
 
 
@@ -99,6 +116,7 @@ def init(req: InitRequest):
 
     boundary = _boundary(req.boundary)
     sim = Simulation(grid, boundary)
+    
     return _grid_state()
 
 
