@@ -2,6 +2,7 @@
 
 from core.grid import Grid
 import numpy as np
+
 from world.boundaries import Boundary
 
 def step(grid: Grid, boundary: Boundary) -> Grid:
@@ -14,5 +15,4 @@ def step(grid: Grid, boundary: Boundary) -> Grid:
     ).astype(np.uint8)
     
     return Grid(new)
-
 
