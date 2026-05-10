@@ -25,7 +25,7 @@ class Grid:
 
     @classmethod
     def empty(cls, shape: tuple) -> "Grid":
-        return cls(np.zeros(shape, dtype=np.uint8))
+        return cls(np.zeros(shape, dtype = np.uint8))
 
     @classmethod
     def random(cls, shape: tuple, p: float = 0.18) -> "Grid":
