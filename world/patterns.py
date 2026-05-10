@@ -68,7 +68,7 @@ class Basic:
     def obospark() -> Grid:
         data = np.array([
             [1, 0, 1]
-        ], data = np.uint8)
+        ], dtype = np.uint8)
         return Grid(data)
     
     @staticmethod
@@ -280,3 +280,18 @@ class Decapole:
             [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ], dtype = np.uint8)
         return Grid(data)
+    
+class Mozart:
+
+    @staticmethod
+    def mozart() -> Grid:
+        data = np.array([
+            [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+            [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+        ], dtype = np.uint8)
+        return Grid(data)
+
