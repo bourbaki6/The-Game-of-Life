@@ -45,8 +45,8 @@ def _require_sim():
         raise HTTPException(400, "Call /init first")
 
 class InitRequest(BaseModel):
-    cols:     int = 120
-    rows:     int = 80
+    cols: int = 120
+    rows: int = 80
     pattern:  Literal[
         "random", "clustered", "symmetric", "sparse", "dense",
         "glider", "pulsar", "gosper", "rpentomino", "tpentomino",
